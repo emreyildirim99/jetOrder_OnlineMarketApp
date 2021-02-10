@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:sweetalert/sweetalert.dart';
 import 'LoginPage.dart';
 import 'package:emre_yildirim_jetorder/services/RegisterService.dart';
 
@@ -14,12 +15,61 @@ class _RegisterPageState extends State<RegisterPage> {
   String selectedProvince;
   String selectedDistrict;
 
-  RegisterService register = new RegisterService();
+  RegisterService registerData = new RegisterService();
+
+  //Input Controllers
+  TextEditingController name = TextEditingController();
+  TextEditingController phone = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController pass = TextEditingController();
+  TextEditingController address = TextEditingController();
+
 
   //Redirect Login Page
   void openLoginPage()
   {
     Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+  }
+
+  //Register User
+  Future<void> registerFunction () async {
+
+    if(selectedDistrict == null || selectedProvince == null){
+
+      SweetAlert.show(context,
+          title: "Oopps!",
+          subtitle: "Please fill all the areas.",
+          style: SweetAlertStyle.error);
+
+    }else{
+
+      RegisterService userData = new RegisterService(userEmail: email.text,userName: name.text,userAddress: address.text,userDistrict: selectedDistrict,userPassword: pass.text,userPhone: phone.text,userProvince: selectedProvince);
+
+      var registerStatus = await userData.registerUser();
+
+      if(registerStatus == 'success'){
+
+        SweetAlert.show(context,
+            title: "Successful!",
+            subtitle: "Succesfully registered.",
+            style: SweetAlertStyle.success,
+            onPress: (bool isConfirm) {
+              if (isConfirm) {
+              openLoginPage();
+              return false;
+              }
+            });
+
+      }else{
+
+        SweetAlert.show(context,
+            title: "Oopps!",
+            subtitle: "There is something wrong. Try again!",
+            style: SweetAlertStyle.error);
+      }
+    }
+
+
   }
 
   @override
@@ -57,12 +107,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       SizedBox(height: 10,),
                       TextField(
+                        controller: name,
                         decoration: InputDecoration(
                           labelText: "Name and Surname",
                           icon: Icon(Icons.account_box, color: Colors.blueAccent,),
                         ),
                       ),
                       TextField(
+                        controller: phone,
                         decoration: InputDecoration(
                           labelText: "Phone Number (e.g. 5xx xxx xx xx)",
                           icon: Icon(Icons.phone, color: Colors.blueAccent,),
@@ -70,12 +122,14 @@ class _RegisterPageState extends State<RegisterPage> {
                         keyboardType: TextInputType.number,
                       ),
                       TextField(
+                        controller: email,
                         decoration: InputDecoration(
                           labelText: "Email",
                           icon: Icon(Icons.mail_outline, color: Colors.blueAccent,),
                         ),
                       ),
                       TextField(
+                        controller: pass,
                         obscureText: true,
                         decoration: InputDecoration(
                           labelText: "Password",
@@ -122,7 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                  selectedProvince = newValue;
                                 });
                               },
-                              items: register.getProvinces().map((valueItem){
+                              items: registerData.getProvinces().map((valueItem){
                                 return DropdownMenuItem(
                                   value: valueItem,
                                   child: Center(child: Text(valueItem, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
@@ -171,7 +225,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   selectedDistrict = newValue;
                                 });
                               },
-                              items: register.getDistricts().map((valueItem){
+                              items: registerData.getDistricts().map((valueItem){
                                 return DropdownMenuItem(
                                   value: valueItem,
                                   child: Center(child: Text(valueItem, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
@@ -182,29 +236,33 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       TextField(
+                        controller: address,
                         decoration: InputDecoration(
                           labelText: "Home Address",
                           icon: Icon(Icons.home, color: Colors.blueAccent,),
                         ),
                       ),
                       SizedBox(height: 30,),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
-                            gradient: LinearGradient(
-                                colors: [HexColor("#CB356B"), HexColor("#EF476F")],
-                                stops: [0,1],
-                                begin: Alignment.topCenter
-                            )
-                        ),
-                        child: Center(
-                          child: Text("Register", style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700,
-                          ),),
+                      InkWell(
+                        onTap: registerFunction,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(40)),
+                              gradient: LinearGradient(
+                                  colors: [HexColor("#CB356B"), HexColor("#EF476F")],
+                                  stops: [0,1],
+                                  begin: Alignment.topCenter
+                              )
+                          ),
+                          child: Center(
+                            child: Text("Register", style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                            ),),
+                          ),
                         ),
                       ),
                       SizedBox(height: 10,),
