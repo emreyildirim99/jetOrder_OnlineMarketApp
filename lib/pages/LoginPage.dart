@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'RegisterPage.dart';
+
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -7,6 +10,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+
+  void openRegisterPage()
+  {
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> RegisterPage()));
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,69 +56,72 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 10),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                        icon: Icon(Icons.mail),
-                      ),
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: "Password",
-                        icon: Icon(Icons.vpn_key),
-                      ),
-                    ),
-                    SizedBox(height: 30),
-                    InkWell(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
-                            gradient: LinearGradient(
-                                colors: [HexColor("#92e3a9"), HexColor("#06D6A0")],
-                                stops: [0,1],
-                                begin: Alignment.topCenter
-                            )
-                        ),
-                        child: Center(
-                          child: Text("Login", style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700,
-                          ),),
+                padding: EdgeInsets.only(bottom: 30),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 10),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          icon: Icon(Icons.mail, color: HexColor("#83CC98")),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 30),
-                    InkWell(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
-                            gradient: LinearGradient(
-                                colors: [HexColor("#CB356B"), HexColor("#EF476F")],
-                                stops: [0,1],
-                                begin: Alignment.topCenter
-                            )
-                        ),
-                        child: Center(
-                          child: Text("Register", style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700,
-                          ),),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          icon: Icon(Icons.vpn_key, color: HexColor("#83CC98"),),
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 30),
+                      InkWell(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(40)),
+                              gradient: LinearGradient(
+                                  colors: [HexColor("#92e3a9"), HexColor("#06D6A0")],
+                                  stops: [0,1],
+                                  begin: Alignment.topCenter
+                              )
+                          ),
+                          child: Center(
+                            child: Text("Login", style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                            ),),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      InkWell(
+                        onTap: openRegisterPage,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(40)),
+                              gradient: LinearGradient(
+                                  colors: [HexColor("#CB356B"), HexColor("#EF476F")],
+                                  stops: [0,1],
+                                  begin: Alignment.topCenter
+                              )
+                          ),
+                          child: Center(
+                            child: Text("Register", style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                            ),),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -116,5 +130,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
 
 }
