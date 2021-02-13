@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'RegisterPage.dart';
+import 'package:emre_yildirim_jetorder/services/LoginService.dart';
+import 'package:sweetalert/sweetalert.dart';
 
 
 
@@ -12,11 +14,48 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
 
 
+  //Input Controllers
+  TextEditingController email = TextEditingController();
+  TextEditingController pass = TextEditingController();
+
   void openRegisterPage()
   {
     Navigator.push(context, MaterialPageRoute(builder: (context)=> RegisterPage()));
   }
 
+  //Register User
+  Future<void> loginFunction () async {
+
+    if(email.text == "" || pass.text == ""){
+
+      SweetAlert.show(context,
+          title: "Oopps!",
+          subtitle: "Please fill all the areas.",
+          style: SweetAlertStyle.error);
+
+    }else{
+
+      LoginService loginHelper = new LoginService(email:email.text,password:pass.text);
+
+      var loginStatus = await loginHelper.loginUser();
+
+      if(loginStatus["status"] == "error"){
+
+        SweetAlert.show(context,
+            title: "Oopps!",
+            subtitle: "Incorrect email or password. Try again!",
+            style: SweetAlertStyle.error);
+
+      }else{
+
+      //Go to Home Page
+
+      }
+
+    }
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,12 +103,14 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       SizedBox(height: 10),
                       TextField(
+                        controller: email,
                         decoration: InputDecoration(
                           labelText: "Email",
                           icon: Icon(Icons.mail, color: HexColor("#83CC98")),
                         ),
                       ),
                       TextField(
+                        controller: pass,
                         decoration: InputDecoration(
                           labelText: "Password",
                           icon: Icon(Icons.vpn_key, color: HexColor("#83CC98"),),
@@ -77,6 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 30),
                       InkWell(
+                        onTap: loginFunction,
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 20),
                           width: MediaQuery.of(context).size.width,

@@ -30,6 +30,10 @@ if ($_POST["operation"] == "register") {
   }
 }
 
+if ($_POST["operation"] == "login") {
+  Login($_POST["email"], $_POST["password"]);
+}
+
 // operations end
 
 function Register($name,$phone,$email,$password,$province,$district,$address)
@@ -40,7 +44,7 @@ function Register($name,$phone,$email,$password,$province,$district,$address)
   $st2->execute([$email]);
   $all = $st2->fetchAll();
   if (count($all) < 1) {
-    $sql = "INSERT INTO users SET 
+    $sql = "INSERT INTO users SET
       userName = ?,
       userPhone = ?,
       userEmail = ?,
@@ -50,7 +54,7 @@ function Register($name,$phone,$email,$password,$province,$district,$address)
       userAddress = ?";
     $st = $con->prepare($sql);
 
-    $st->execute([$name, $phone, $email, md5($password), $province, $district, $address]); 
+    $st->execute([$name, $phone, $email, md5($password), $province, $district, $address]);
     if ($st) {
       echo json_encode(["status" => "success"]);
       exit();
@@ -63,6 +67,24 @@ function Register($name,$phone,$email,$password,$province,$district,$address)
   	echo json_encode(["status" => "error"]);
     exit();
   }
+}
+
+function Login($email, $password)
+{
+  global $con;
+
+  $sql =
+    "SELECT userID,userName,userEmail FROM users WHERE userEmail=? AND userPassword=?";
+  $st = $con->prepare($sql);
+
+  $st->execute([$email, md5($password)]); //encrypt password
+  $all = $st->fetchAll();
+  if (count($all) == 1) {
+    echo json_encode($all[0]);
+    exit();
+  }
+  echo json_encode(["status" => "error"]);
+  exit();
 }
 
 echo "jetOrder API";

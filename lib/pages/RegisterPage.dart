@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sweetalert/sweetalert.dart';
-import 'LoginPage.dart';
 import 'package:emre_yildirim_jetorder/services/RegisterService.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -28,7 +27,8 @@ class _RegisterPageState extends State<RegisterPage> {
   //Redirect Login Page
   void openLoginPage()
   {
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+    //Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+    Navigator.of(context).pushNamed("/LoginPage");
   }
 
   //Register User
@@ -49,16 +49,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
       if(registerStatus == 'success'){
 
+        openLoginPage();
         SweetAlert.show(context,
             title: "Successful!",
             subtitle: "Succesfully registered.",
-            style: SweetAlertStyle.success,
-            onPress: (bool isConfirm) {
-              if (isConfirm) {
-              openLoginPage();
-              return false;
-              }
-            });
+            style: SweetAlertStyle.success);
 
       }else{
 
