@@ -34,6 +34,17 @@ if ($_POST["operation"] == "login") {
   Login($_POST["email"], $_POST["password"]);
 }
 
+if ($_POST["operation"] == "getCategories") {
+  GetCategories();
+}
+
+if ($_POST["operation"] == "getProducts") {
+  GetProducts($_POST["categoryID"]);
+}
+if ($_POST["operation"] == "getSearchedProducts") {
+  GetSearchedProducts($_POST["productName"]);
+}
+
 // operations end
 
 function Register($name,$phone,$email,$password,$province,$district,$address)

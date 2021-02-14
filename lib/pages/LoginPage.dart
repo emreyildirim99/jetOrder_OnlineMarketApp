@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
 
       }else{
 
-      //Go to Home Page
+        Navigator.of(context).pushNamed("/HomePage");
 
       }
 
@@ -110,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       TextField(
+                        obscureText: true,
                         controller: pass,
                         decoration: InputDecoration(
                           labelText: "Password",

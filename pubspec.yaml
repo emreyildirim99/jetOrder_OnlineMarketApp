@@ -31,6 +31,9 @@ dependencies:
   hexcolor: ^1.0.6
   http: ^0.12.2
   sweetalert: ^0.0.1
+  google_fonts: ^1.1.2
+  font_awesome_flutter: ^8.11.0
+  flutter_search_bar: ^2.1.0
 
 dev_dependencies:
   flutter_test:
