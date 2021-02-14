@@ -41,6 +41,7 @@ if ($_POST["operation"] == "getCategories") {
 if ($_POST["operation"] == "getProducts") {
   GetProducts($_POST["categoryID"]);
 }
+
 if ($_POST["operation"] == "getSearchedProducts") {
   GetSearchedProducts($_POST["productName"]);
 }
@@ -95,6 +96,19 @@ function Login($email, $password)
     exit();
   }
   echo json_encode(["status" => "error"]);
+  exit();
+}
+
+
+function GetProducts($id)
+{
+  global $con;
+
+  $sql = "SELECT * FROM products WHERE productCategory = ?";
+  $st = $con->prepare($sql);
+  $st->execute([$id]);
+  $all = $st->fetchAll(PDO::FETCH_ASSOC);
+  echo json_encode($all);
   exit();
 }
 
