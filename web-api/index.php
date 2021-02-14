@@ -112,6 +112,21 @@ function GetProducts($id)
   exit();
 }
 
+
+
+function GetSearchedProducts($name)
+{
+  global $con;
+
+  $sql = "SELECT * FROM products WHERE productName LIKE '%$name%' ";
+  $st = $con->prepare($sql);
+  $st->execute([$name]);
+  $all = $st->fetchAll(PDO::FETCH_ASSOC);
+  echo json_encode($all);
+  exit();
+}
+
+
 echo "jetOrder API";
 exit();
 ?>
