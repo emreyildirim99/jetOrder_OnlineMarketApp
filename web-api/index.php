@@ -34,16 +34,20 @@ if ($_POST["operation"] == "login") {
   Login($_POST["email"], $_POST["password"]);
 }
 
-if ($_POST["operation"] == "getCategories") {
-  GetCategories();
-}
-
 if ($_POST["operation"] == "getProducts") {
   GetProducts($_POST["categoryID"]);
 }
 
 if ($_POST["operation"] == "getSearchedProducts") {
   GetSearchedProducts($_POST["productName"]);
+}
+
+if ($_POST["operation"] == "addFavorite") {
+  AddFavorite($_POST["userID"], $_POST["productID"]);
+}
+
+if ($_POST["operation"] == "getFavorites") {
+  AddFavorite($_POST["userID"], $_POST["productID"]);
 }
 
 // operations end
@@ -113,7 +117,6 @@ function GetProducts($id)
 }
 
 
-
 function GetSearchedProducts($name)
 {
   global $con;
@@ -126,6 +129,42 @@ function GetSearchedProducts($name)
   exit();
 }
 
+function AddFavorite($userid,$productid)
+{
+  global $con;
+
+  $checkFavorite = "SELECT * FROM favorites WHERE favoriteProductID = ? AND favoriteUserID = ?";
+  $st2 = $con->prepare($checkFavorite);
+  $st2->execute([$productid,$userid]);
+  $all = $st2->fetchAll();
+
+  if(count($all) > 0){
+  $sql = "DELETE FROM favorites WHERE favoriteProductID = ? AND favoriteUserID = ?";
+  $st = $con->prepare($sql);
+  $st->execute([$productid,$userid]);
+  if($st){
+   echo json_encode(["status" => "removedSuccess"]);
+   exit;
+  }
+ }else{
+  $sql = "INSERT INTO favorites SET favoriteProductID = ? , favoriteUserID = ?";
+  $st = $con->prepare($sql);
+  $st->execute([$productid,$userid]);
+  if($st){
+
+   echo json_encode(["status" => "addedSuccess"]);
+   exit;
+
+  }else{
+
+    echo json_encode(["status" => "error"]);
+    exit;
+  }
+
+}
+
+
+}
 
 echo "jetOrder API";
 exit();
