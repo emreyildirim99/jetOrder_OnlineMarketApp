@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:emre_yildirim_jetorder/services/HomeService.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,7 +20,10 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.exit_to_app),
-          onPressed: () {Navigator.of(context).pushNamed("/LoginPage");},
+          onPressed: () {
+            FlutterSession().set("userID", 0);
+            Navigator.of(context).pushNamed("/LoginPage");
+            },
           color: Colors.white,
           tooltip: 'Menu',
         ),
@@ -35,6 +40,8 @@ class _HomePageState extends State<HomePage> {
         buildDefaultAppBar: buildAppBar
     );
   }
+
+
 
 
   HomeService homeHelper = new HomeService();
@@ -58,6 +65,7 @@ class _HomePageState extends State<HomePage> {
   void getSearchedProduct(String productName){
     Navigator.pushNamed(context, '/ProductListPage', arguments: {'categoryID': 0,'productName': productName});
   }
+
 
 
   @override

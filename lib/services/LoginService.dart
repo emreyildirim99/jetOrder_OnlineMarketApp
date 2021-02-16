@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
 
 class LoginService{
@@ -20,6 +21,9 @@ class LoginService{
     var result;
     if(response.body.isNotEmpty) {
       result = json.decode(response.body);
+
+      //Set Session to keep users logged in & auto login
+      await FlutterSession().set('userID', result["userID"]);
     }
 
     //Return response
