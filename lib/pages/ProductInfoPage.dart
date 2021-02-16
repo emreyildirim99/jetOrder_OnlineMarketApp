@@ -3,6 +3,7 @@ import 'package:flutter_session/flutter_session.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:emre_yildirim_jetorder/services/FavoriteProductService.dart';
 import 'package:sweetalert/sweetalert.dart';
+import 'package:emre_yildirim_jetorder/services/ShoppingCartService.dart';
 
 
 class ProductInfo extends StatefulWidget {
@@ -13,11 +14,28 @@ class ProductInfo extends StatefulWidget {
 class _ProductInfoState extends State<ProductInfo> {
 
   bool isFavorite = false;
+  var productQuantity = 1;
+  var productID;
+
+  void addProductToCart() async{
+
+    ShoppingCartService shoppingCart = new ShoppingCartService(userID: await FlutterSession().get('userID'), productID: productID, quantity: productQuantity);
+    var result = await shoppingCart.addShoppingCart();
+    if(result=='success'){
+      SweetAlert.show(context,
+          title: "Successful!",
+          subtitle: "Successfully added product to your cart.",
+          style: SweetAlertStyle.success);
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
 
     final Map<String, Object> productData = ModalRoute.of(context).settings.arguments;
+
+    productID = productData['id'];
 
     return Scaffold(
       appBar: AppBar(
@@ -152,8 +170,15 @@ class _ProductInfoState extends State<ProductInfo> {
                             color: Colors.white,
                             size: 30,
                           ),
+                          onPressed: (){
+                              if(productQuantity > 1){
+                                setState(() {
+                                  productQuantity--;
+                                });
+                              }
+                          },
                         ),
-                        Text('1', style: TextStyle(
+                        Text('$productQuantity', style: TextStyle(
                             color: Colors.white,
                             fontSize: 30,
                             fontWeight: FontWeight.w700
@@ -164,12 +189,19 @@ class _ProductInfoState extends State<ProductInfo> {
                             color: Colors.white,
                             size: 30,
                           ),
+                          onPressed: (){
+                            setState(() {
+                              productQuantity++;
+                            });
+
+                          },
                         ),
                       ],
                     ),
                   ),
                   Center(
                     child: InkWell(
+                      onTap: addProductToCart,
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 20),
                         width: 190,

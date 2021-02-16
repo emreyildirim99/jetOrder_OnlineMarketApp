@@ -28,7 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void openLoginPage()
   {
     //Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
-    Navigator.of(context).pushNamed("/LoginPage");
+    Navigator.pop(context);
   }
 
   //Register User

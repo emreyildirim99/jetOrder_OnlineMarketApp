@@ -50,6 +50,11 @@ if ($_POST["operation"] == "getFavoriteProducts") {
   GetFavoriteProducts($_POST["userID"]);
 }
 
+if ($_POST["operation"] == "addShoppingCart") {
+  AddShoppingCart($_POST["userID"], $_POST["productID"],$_POST["quantity"]);
+}
+
+
 // operations end
 
 function Register($name,$phone,$email,$password,$province,$district,$address)
@@ -92,15 +97,18 @@ function Login($email, $password)
   $sql =
     "SELECT userID,userName,userEmail FROM users WHERE userEmail=? AND userPassword=?";
   $st = $con->prepare($sql);
-
   $st->execute([$email, md5($password)]); //encrypt password
   $all = $st->fetchAll();
+
   if (count($all) == 1) {
+    $all[0]["status"] = "success";
     echo json_encode($all[0]);
     exit();
   }
-  echo json_encode(["status" => "error"]);
-  exit();
+
+     echo json_encode(["status" => "error","userID" => 0]);
+     exit();
+
 }
 
 
@@ -177,6 +185,45 @@ function GetFavoriteProducts($userid)
   $all = $st->fetchAll(PDO::FETCH_ASSOC);
   echo json_encode($all);
   exit();
+}
+
+
+function AddShoppingCart($userid,$productid,$quantity)
+{
+  global $con;
+
+
+  $checkCart = "SELECT * FROM shoppingCart WHERE cartUserID = ? AND cartProductID = ?";
+  $st2 = $con->prepare($checkCart);
+  $st2->execute([$userid,$productid]);
+  $all = $st2->fetchAll();
+
+ if(count($all) > 0){
+  $sql = "UPDATE shoppingCart SET cartQuantity = cartQuantity + ? WHERE cartUserID = ? AND cartProductID = ?";
+  $st = $con->prepare($sql);
+  $st->execute([$quantity,$userid,$productid]);
+  if($st){
+   echo json_encode(["status" => "success"]);
+   exit;
+  }
+ }else{
+  $sql = "INSERT INTO shoppingCart SET cartProductID = ? , cartUserID = ?, cartQuantity = ? ";
+  $st = $con->prepare($sql);
+  $st->execute([$productid,$userid,$quantity]);
+  if($st){
+
+   echo json_encode(["status" => "success"]);
+   exit;
+
+  }else{
+
+    echo json_encode(["status" => "error"]);
+    exit;
+  }
+
+
+ }
+
 }
 
 echo "jetOrder API";

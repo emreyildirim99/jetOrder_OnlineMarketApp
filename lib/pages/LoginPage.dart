@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.push(context, MaterialPageRoute(builder: (context)=> RegisterPage()));
   }
 
-  //Register User
+  //Login User
   Future<void> loginFunction () async {
 
     if(email.text == "" || pass.text == ""){
@@ -39,16 +39,19 @@ class _LoginPageState extends State<LoginPage> {
 
       var loginStatus = await loginHelper.loginUser();
 
-      if(loginStatus["status"] == "error"){
+      if(loginStatus['status'] == 'success'){
+
+        Navigator.of(context).pushNamed("/HomePage");
+
+      }else{
 
         SweetAlert.show(context,
             title: "Oopps!",
             subtitle: "Incorrect email or password. Try again!",
             style: SweetAlertStyle.error);
 
-      }else{
-        Navigator.of(context).pushNamed("/HomePage");
       }
+
 
     }
 
