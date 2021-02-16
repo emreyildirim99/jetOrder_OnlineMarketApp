@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:emre_yildirim_jetorder/services/FavoriteProductService.dart';
+import 'package:sweetalert/sweetalert.dart';
 
 
 class ProductInfo extends StatefulWidget {
@@ -8,26 +11,57 @@ class ProductInfo extends StatefulWidget {
 }
 
 class _ProductInfoState extends State<ProductInfo> {
+
+  bool isFavorite = false;
+
   @override
   Widget build(BuildContext context) {
+
     final Map<String, Object> productData = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.blueAccent,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: Colors.black,
+            color: Colors.white,
           ),
           onPressed: (){Navigator.pop(context);},
         ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
-                Icons.favorite_border
+                Icons.favorite_outlined,
             ),
-          )
+            onPressed: () async{
+              FavoriteProductService favoriteProduct = new FavoriteProductService(userID: await FlutterSession().get('userID'), productID: productData['id']);
+              var result = await favoriteProduct.addFavorite();
+              if(result=='addedSuccess'){
+
+                SweetAlert.show(context,
+                    title: "Successful!",
+                    subtitle: "Successfully added to your favorites.",
+                    style: SweetAlertStyle.success);
+
+                setState(() {
+                  isFavorite  = !isFavorite;
+                });
+
+              }else if(result=='removedSuccess'){
+                SweetAlert.show(context,
+                    title: "Successful!",
+                    subtitle: "Successfully removed from your favorites.",
+                    style: SweetAlertStyle.success);
+
+                setState(() {
+                  isFavorite  = !isFavorite;
+                });
+              }
+
+            },
+              color: isFavorite ? Colors.red : Colors.white,)
         ],
       ),
       body: Container(
