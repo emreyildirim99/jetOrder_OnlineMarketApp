@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:emre_yildirim_jetorder/pages/ProductInfoPage.dart';
 import 'package:emre_yildirim_jetorder/services/ProductService.dart';
+import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:sweetalert/sweetalert.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -12,6 +14,35 @@ class ProductListPage extends StatefulWidget {
 
 class _ProductListPageState extends State<ProductListPage> {
 
+  SearchBar searchBar;
+
+  AppBar buildAppBar(BuildContext context) {
+    return new AppBar(
+      elevation: 0,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios),
+        onPressed: (){Navigator.pop(context);},
+        color: Colors.white,
+        tooltip: 'Menu',
+      ),
+      title: Center(child: Text("jetOrder - Product List")),
+      actions: [searchBar.getSearchAction(context)],
+    );
+  }
+
+  _ProductListPageState() {
+    searchBar = new SearchBar(
+        inBar: false,
+        setState: setState,
+        hintText: "Name of the product",
+        onSubmitted: getSearchedProduct,
+        buildDefaultAppBar: buildAppBar
+    );
+  }
+
+  void getSearchedProduct(String productName){
+    Navigator.pushNamed(context, '/ProductListPage', arguments: {'categoryID': 0,'productName': productName});
+  }
 
   ProductService productHelper = new ProductService();
 
@@ -22,39 +53,7 @@ class _ProductListPageState extends State<ProductListPage> {
     final Map<String, Object> categoryData = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: Icon(
-            Icons.menu,
-            color: Colors.black,
-          ),
-        ),
-        title: Container(
-          width: 50,
-          height: 50,
-        ),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
-          ),
-          Stack(
-            children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.shopping_cart,
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
+      appBar: searchBar.build(context),
       body: FutureBuilder(
         future: productHelper.getProducts(categoryData["categoryID"].toString(),categoryData["productName"].toString()),
         builder: (context, snapshot){
@@ -80,7 +79,7 @@ class _ProductListPageState extends State<ProductListPage> {
   Container listProducts(int id)
   {
 
-    var productID = id + 1;
+    var productID = int.parse(products[id]["productID"]);
     return Container(
       padding: EdgeInsets.all(10),
       color: Colors.white,

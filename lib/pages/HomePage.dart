@@ -13,6 +13,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  int selectedIndex = 0;
+
   SearchBar searchBar;
 
   AppBar buildAppBar(BuildContext context) {
@@ -27,7 +29,7 @@ class _HomePageState extends State<HomePage> {
           color: Colors.white,
           tooltip: 'Menu',
         ),
-        title: Center(child: Text("jetOrder")),
+        title: Center(child: Text("jetOrder - Home Page")),
         actions: [searchBar.getSearchAction(context)],
     );
   }
@@ -40,9 +42,6 @@ class _HomePageState extends State<HomePage> {
         buildDefaultAppBar: buildAppBar
     );
   }
-
-
-
 
   HomeService homeHelper = new HomeService();
 
@@ -67,7 +66,6 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,6 +81,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(),
     );
   }
 
@@ -214,4 +213,86 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget BottomNavigationBar() {
+    List<String> Options = [
+      'Home',
+      'Favorites',
+      'Cart',
+      'My Orders',
+      'Profile'
+    ];
+
+    List<IconData> BarIcons = [
+      Icons.home,
+      Icons.favorite_border,
+      Icons.shopping_cart_rounded,
+      Icons.delivery_dining,
+      Icons.person_outline
+    ];
+
+    return Container(
+      height: 80,
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+          color: Color(0xff84CC83),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      child: Row(
+        children: List.generate(Options.length, (index) {
+          if (index == selectedIndex) {
+            return Expanded(
+              flex: 2,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedIndex = index;
+                  });
+                },
+                child: Center(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                            topRight: Radius.circular(20))),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          BarIcons[index],
+                          color: Colors.green,
+                        ),
+                        Text(
+                          Options[index],
+                          style: GoogleFonts.varelaRound(
+                              fontSize: 15, fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+
+          return Expanded(
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedIndex = index;
+                });
+              },
+              child: Icon(
+                BarIcons[index],
+                color: Colors.white,
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
 }

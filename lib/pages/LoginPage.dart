@@ -47,9 +47,7 @@ class _LoginPageState extends State<LoginPage> {
             style: SweetAlertStyle.error);
 
       }else{
-
         Navigator.of(context).pushNamed("/HomePage");
-
       }
 
     }
