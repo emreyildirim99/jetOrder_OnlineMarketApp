@@ -21,7 +21,9 @@ class _ProductListPageState extends State<ProductListPage> {
       elevation: 0,
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios),
-        onPressed: (){Navigator.pop(context);},
+        onPressed: (){
+          Navigator.pop(context);
+          },
         color: Colors.white,
         tooltip: 'Menu',
       ),
@@ -42,6 +44,11 @@ class _ProductListPageState extends State<ProductListPage> {
 
   void getSearchedProduct(String productName){
     Navigator.pushNamed(context, '/ProductListPage', arguments: {'categoryID': 0,'productName': productName});
+  }
+
+  void openProductInfo(int id, String photoUrl, String price, String name, String quantity,String desc)
+  {
+    Navigator.pushNamed(context, '/ProductInfoPage', arguments: {'id': id, 'photoUrl':photoUrl, 'name':name, 'desc':desc, 'quantity':quantity, 'price':price});
   }
 
   ProductService productHelper = new ProductService();
@@ -149,9 +156,5 @@ class _ProductListPageState extends State<ProductListPage> {
         ),
       ),
     );
-  }
-  void openProductInfo(int id, String photoUrl, String price, String name, String quantity,String desc)
-  {
-    Navigator.pushNamed(context, '/ProductInfoPage', arguments: {'id': id, 'photoUrl':photoUrl, 'name':name, 'desc':desc, 'quantity':quantity, 'price':price});
   }
 }

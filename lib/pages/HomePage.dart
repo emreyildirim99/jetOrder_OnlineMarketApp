@@ -65,6 +65,9 @@ class _HomePageState extends State<HomePage> {
     Navigator.pushNamed(context, '/ProductListPage', arguments: {'categoryID': 0,'productName': productName});
   }
 
+  void getFavoriteProducts(){
+    Navigator.pushNamed(context, '/ProductListPage', arguments: {'categoryID': -1});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -283,6 +286,9 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 setState(() {
                   selectedIndex = index;
+                  if(selectedIndex == 1){
+                    getFavoriteProducts();
+                  }
                 });
               },
               child: Icon(

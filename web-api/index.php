@@ -46,8 +46,8 @@ if ($_POST["operation"] == "addFavorite") {
   AddFavorite($_POST["userID"], $_POST["productID"]);
 }
 
-if ($_POST["operation"] == "getFavorites") {
-  AddFavorite($_POST["userID"], $_POST["productID"]);
+if ($_POST["operation"] == "getFavoriteProducts") {
+  GetFavoriteProducts($_POST["userID"]);
 }
 
 // operations end
@@ -164,6 +164,19 @@ function AddFavorite($userid,$productid)
 }
 
 
+}
+
+
+function GetFavoriteProducts($userid)
+{
+  global $con;
+
+  $sql = "SELECT productID, productName, productPhoto, productPrice, productDesc, productQuantity, productCategory FROM favorites INNER JOIN products ON favoriteProductID = productID WHERE favoriteUserID = ?";
+  $st = $con->prepare($sql);
+  $st->execute([$userid]);
+  $all = $st->fetchAll(PDO::FETCH_ASSOC);
+  echo json_encode($all);
+  exit();
 }
 
 echo "jetOrder API";
