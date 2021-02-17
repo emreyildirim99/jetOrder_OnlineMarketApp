@@ -73,8 +73,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: searchBar.build(context),
-      body: SingleChildScrollView(
-        child: Container(
+      body: Container(
           color: Colors.white,
           child: Column(
             children: <Widget>[
@@ -83,7 +82,6 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-      ),
       bottomNavigationBar: BottomNavigationBar(),
     );
   }
@@ -118,8 +116,8 @@ class _HomePageState extends State<HomePage> {
             InkWell(
               onTap: goFruits,
               child: Container(
-              height: 80,
-              width: 80,
+              height: 85,
+              width: 85,
               padding: const EdgeInsets.all(25),
               decoration: BoxDecoration(
                 color: Colors.blueAccent,
@@ -135,15 +133,15 @@ class _HomePageState extends State<HomePage> {
           ),
             ),
           SizedBox(height: 5),
-          Text("Meyveler",style: GoogleFonts.varelaRound(fontWeight: FontWeight.w500),)
+          Text("Fruits",style: GoogleFonts.varelaRound(fontWeight: FontWeight.w500),)
         ],
       ),Column(
             children: <Widget>[
               InkWell(
                 onTap: goVegetables,
                 child: Container(
-                  height: 80,
-                  width: 80,
+                  height: 85,
+                  width: 85,
                   padding: const EdgeInsets.all(25),
                   decoration: BoxDecoration(
                     color: Colors.green,
@@ -159,15 +157,15 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               SizedBox(height: 5),
-              Text("Sebzeler",style: GoogleFonts.varelaRound(fontWeight: FontWeight.w500),)
+              Text("Vegetables",style: GoogleFonts.varelaRound(fontWeight: FontWeight.w500),)
             ],
           ),Column(
             children: <Widget>[
               InkWell(
                 onTap: goSnacks,
                 child: Container(
-                  height: 80,
-                  width: 80,
+                  height: 85,
+                  width: 85,
                   padding: const EdgeInsets.all(25),
                   decoration: BoxDecoration(
                     color: Colors.redAccent,
@@ -183,15 +181,15 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               SizedBox(height: 5),
-              Text("Atıştırmalık",style: GoogleFonts.varelaRound(fontWeight: FontWeight.w500),)
+              Text("Snacks",style: GoogleFonts.varelaRound(fontWeight: FontWeight.w500),)
             ],
           ),Column(
             children: <Widget>[
               InkWell(
                 onTap: goDrinks,
                 child: Container(
-                  height: 80,
-                  width: 80,
+                  height: 85,
+                  width: 85,
                   padding: const EdgeInsets.all(25),
                   decoration: BoxDecoration(
                     color: Colors.orange,
@@ -207,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               SizedBox(height: 5),
-              Text("İçecekler",style: GoogleFonts.varelaRound(fontWeight: FontWeight.w500),)
+              Text("Drinks",style: GoogleFonts.varelaRound(fontWeight: FontWeight.w500),)
             ],
           )],
          ),
@@ -288,6 +286,10 @@ class _HomePageState extends State<HomePage> {
                   selectedIndex = index;
                   if(selectedIndex == 1){
                     getFavoriteProducts();
+                  }else if(selectedIndex == 2){
+                    Navigator.pushNamed(context, '/ShoppingCartPage');
+                  }else if(selectedIndex == 4){
+                    Navigator.pushNamed(context, '/ProfilePage');
                   }
                 });
               },

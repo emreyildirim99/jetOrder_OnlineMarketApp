@@ -16,6 +16,8 @@ class _ProductInfoState extends State<ProductInfo> {
   bool isFavorite = false;
   var productQuantity = 1;
   var productID;
+  Map<String, Object> productData = {};
+
 
   void addProductToCart() async{
 
@@ -33,9 +35,11 @@ class _ProductInfoState extends State<ProductInfo> {
   @override
   Widget build(BuildContext context) {
 
-    final Map<String, Object> productData = ModalRoute.of(context).settings.arguments;
+
+    productData = productData.isNotEmpty ? productData : ModalRoute.of(context).settings.arguments;
 
     productID = productData['id'];
+
 
     return Scaffold(
       appBar: AppBar(
@@ -115,7 +119,7 @@ class _ProductInfoState extends State<ProductInfo> {
             Container(
               color: HexColor("#83CC98"),
               padding: EdgeInsets.only(left: 160, top: 10),
-              
+
               child: Row(
                 children: <Widget>[
                   Container(
@@ -123,7 +127,8 @@ class _ProductInfoState extends State<ProductInfo> {
                         color: Colors.white,
                         fontSize: 30,
                         fontWeight: FontWeight.bold
-                    ),),
+                    ),
+                    ),
                   ),
                   Container(
                     child: Text(' /${productData['quantity']}', style: TextStyle(
@@ -193,7 +198,6 @@ class _ProductInfoState extends State<ProductInfo> {
                             setState(() {
                               productQuantity++;
                             });
-
                           },
                         ),
                       ],
@@ -227,7 +231,7 @@ class _ProductInfoState extends State<ProductInfo> {
                   )
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

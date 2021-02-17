@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
 
 class ShoppingCartService{
@@ -29,6 +30,69 @@ class ShoppingCartService{
 
     //Return whether request is successful
     return result["status"];
+
+  }
+
+  Future getShoppingCart () async{
+
+
+    var userID = await FlutterSession().get('userID');
+
+    //Make POST Request to API
+    final response = await http.post("http://10.0.2.2/jetorder/index.php", body:{
+      "operation": "getShoppingCart",
+      "userID": userID.toString(),
+    });
+
+    var result;
+    if(response.body.isNotEmpty) {
+      result = json.decode(response.body);
+    }
+
+    //Return response
+    return result;
+
+  }
+
+  Future getTotalPrice () async{
+
+
+    var userID = await FlutterSession().get('userID');
+
+    //Make POST Request to API
+    final response = await http.post("http://10.0.2.2/jetorder/index.php", body:{
+      "operation": "getTotalPrice",
+      "userID": userID.toString(),
+    });
+
+    var result;
+    if(response.body.isNotEmpty) {
+      result = json.decode(response.body);
+    }
+
+    //Return response
+    return result;
+
+  }
+
+  Future updateShoppingCart (String operation) async{
+
+    var userID = await FlutterSession().get('userID');
+
+    //Make POST Request to API
+    final response = await http.post("http://10.0.2.2/jetorder/index.php", body:{
+      "operation": operation == 'add' ? "addProductShoppingCart" : "removeProductShoppingCart",
+      "userID": userID.toString(),
+      "productID" : this.productID.toString(),
+    });
+
+    var result;
+    if(response.body.isNotEmpty) {
+      result = json.decode(response.body);
+    }
+
+    //Return whether request is successful
+   return result['status'];
 
   }
 
