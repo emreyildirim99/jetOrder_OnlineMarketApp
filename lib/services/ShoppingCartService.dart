@@ -96,4 +96,45 @@ class ShoppingCartService{
 
   }
 
+  Future emptyShoppingCart () async{
+
+    var userID = await FlutterSession().get('userID');
+
+    //Make POST Request to API
+    final response = await http.post("http://10.0.2.2/jetorder/index.php", body:{
+      "operation": "emptyShoppingCart",
+      "userID": userID.toString(),
+    });
+
+    var result;
+    if(response.body.isNotEmpty) {
+      result = json.decode(response.body);
+    }
+
+    //Return whether request is successful
+    return result['status'];
+
+  }
+
+  Future deleteProduct () async{
+
+    var userID = await FlutterSession().get('userID');
+
+    //Make POST Request to API
+    final response = await http.post("http://10.0.2.2/jetorder/index.php", body:{
+      "operation": "deleteProductShoppingCart",
+      "userID": userID.toString(),
+      "productID" : this.productID.toString(),
+    });
+
+    var result;
+    if(response.body.isNotEmpty) {
+      result = json.decode(response.body);
+    }
+
+    //Return whether request is successful
+    return result['status'];
+
+  }
+
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:emre_yildirim_jetorder/helpers/Style.dart';
 import 'package:emre_yildirim_jetorder/services/ShoppingCartService.dart';
 import 'package:decimal/decimal.dart';
+import 'package:sweetalert/sweetalert.dart';
 
 class ShoppingCartPage extends StatefulWidget {
   @override
@@ -16,6 +17,48 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
   List products;
   List totalPrice;
 
+
+  void emptyCart() async{
+
+      var status = await cart.emptyShoppingCart();
+
+      SweetAlert.show(context,subtitle: "Deleting...", style: SweetAlertStyle.loading);
+
+      if(status == 'success'){
+
+         Navigator.pop(context);
+
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => super.widget));
+
+      }
+
+
+  }
+
+  void deleteProduct(int productID) async{
+
+    ShoppingCartService deleteProduct = new ShoppingCartService(productID: productID);
+
+    var status = await deleteProduct.deleteProduct();
+
+    SweetAlert.show(context,subtitle: "Deleting...", style: SweetAlertStyle.loading);
+
+    if(status == 'success'){
+
+      Navigator.pop(context);
+
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => super.widget));
+
+    }
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +76,35 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
             Navigator.pop(context);
           },
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+            onPressed: () {
+
+              SweetAlert.show(context,
+                  subtitle: "Do you want to empty your Shopping Cart?",
+                  style: SweetAlertStyle.confirm,
+                  showCancelButton: true,
+                  onPress: (bool isConfirm) {
+
+                    if(isConfirm) {
+
+                      emptyCart();
+
+                    }else{
+                      SweetAlert.show(context,subtitle: "Canceled!", style: SweetAlertStyle.error);
+                    }
+                    // return false to keep dialog
+                    return false;
+                  });
+
+
+            },
+          )
+        ],
       ),
       body: FutureBuilder(
       future: Future.wait([cart.getShoppingCart(), cart.getTotalPrice()]),
@@ -109,6 +181,30 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                InkWell(
+                    child: Icon(Icons.clear, color: Colors.red, size: 17,),
+                    onTap: (){
+
+                      SweetAlert.show(context,
+                          subtitle: "Do you want to delete?",
+                          style: SweetAlertStyle.confirm,
+                          showCancelButton: true,
+                          onPress: (bool isConfirm) {
+
+                            if(isConfirm) {
+
+                              deleteProduct(int.parse(products[id]["productID"]));
+
+                            }else{
+                              SweetAlert.show(context,subtitle: "Canceled!", style: SweetAlertStyle.error);
+                            }
+                            // return false to keep dialog
+                            return false;
+                          });
+
+                    },
+
+                ),
                 Expanded(
                   child: Container(
                     margin: EdgeInsets.all(10),
@@ -131,7 +227,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                     ],
                   ),
                 ),
-                Expanded(child: Text("${products[id]["totalPrice"]}₺", style: headingStyle,)),
+                Padding(
+                  padding: const EdgeInsets.all(23),
+                  child: Text("${products[id]["totalPrice"]}₺", style: headingStyle,)
+                ),
                 Row(
                   children: [
                     Container(

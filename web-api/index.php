@@ -66,6 +66,10 @@ if ($_POST["operation"] == "getProfileData") {
  GetProfileData($_POST["userID"]);
 }
 
+if ($_POST["operation"] == "emptyShoppingCart") {
+ EmptyShoppingCart($_POST["userID"]);
+}
+
 
 if ($_POST["operation"] == "updateProfileData") {
   if (
@@ -95,6 +99,11 @@ if ($_POST["operation"] == "addProductShoppingCart") {
 if ($_POST["operation"] == "removeProductShoppingCart") {
  RemoveProductShoppingCart($_POST["userID"], $_POST["productID"]);
 }
+
+if ($_POST["operation"] == "deleteProductShoppingCart") {
+ DeleteProductShoppingCart($_POST["userID"], $_POST["productID"]);
+}
+
 
 // operations end
 
@@ -381,6 +390,47 @@ function RemoveProductShoppingCart($userid,$productid)
     }
 
 }
+
+function EmptyShoppingCart($userid)
+{
+   global $con;
+
+    $sql = "DELETE FROM shoppingCart WHERE cartUserID = ?";
+
+    $st = $con->prepare($sql);
+
+    $st->execute([$userid]);
+
+    if ($st) {
+      echo json_encode(["status" => "success"]);
+      exit();
+    } else {
+      echo json_encode(["status" => "error"]);
+      exit();
+    }
+
+}
+
+function DeleteProductShoppingCart($userid, $productid)
+{
+    global $con;
+
+    $sql = "DELETE FROM shoppingCart WHERE cartUserID = ? AND cartProductID = ? ";
+
+    $st = $con->prepare($sql);
+
+    $st->execute([$userid,$productid]);
+
+    if ($st) {
+      echo json_encode(["status" => "success"]);
+      exit();
+    } else {
+      echo json_encode(["status" => "error"]);
+      exit();
+    }
+
+}
+
 
 echo "jetOrder API";
 exit();
