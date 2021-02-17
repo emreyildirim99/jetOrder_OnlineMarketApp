@@ -1,5 +1,7 @@
 <?php
 #jetOrder API - Developed by Emre YILDIRIM
+error_reporting(E_ALL ^ E_NOTICE);
+ini_set('display_errors', 1);
 
 include_once "db.php";
 
@@ -104,6 +106,13 @@ if ($_POST["operation"] == "deleteProductShoppingCart") {
  DeleteProductShoppingCart($_POST["userID"], $_POST["productID"]);
 }
 
+if ($_POST["operation"] == "getOrderData") {
+ GetOrderData($_POST["userID"]);
+}
+
+if ($_POST["operation"] == "placeOrder") {
+ PlaceOrder($_POST["userID"], $_POST["totalPrice"]);
+}
 
 // operations end
 
@@ -431,6 +440,48 @@ function DeleteProductShoppingCart($userid, $productid)
 
 }
 
+function GetOrderData($userid)
+{
+  global $con;
+
+  $sql = "SELECT SUM(productPrice * cartQuantity) as cartPrice, userAddress, userProvince, userDistrict FROM shoppingCart INNER JOIN products ON cartProductID = productID INNER JOIN users ON cartUserID = userID WHERE cartUserID = ?";
+  $st = $con->prepare($sql);
+  $st->execute([$userid]);
+  $all = $st->fetchAll(PDO::FETCH_ASSOC);
+  echo json_encode($all);
+  exit();
+}
+
+function PlaceOrder($userid,$totalPrice)
+{
+
+ function generateRandomString($length = 5) {
+    return substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+  }
+
+  $code = generateRandomString();
+
+  global $con;
+
+  $sql = "INSERT INTO orders (orderCustomerID, orderProductID,orderQuantity,orderCode,orderTotalPrice)
+   SELECT cartUserID, cartProductID, cartQuantity, '$code' , $totalPrice  FROM shoppingCart
+   WHERE cartUserID = ?";
+  $st = $con->prepare($sql);
+  $st->execute([$userid]);
+  if($st){
+   echo json_encode(["status" => "success"]);
+    $sql = "DELETE FROM shoppingCart WHERE cartUserID = ?";
+
+    $st = $con->prepare($sql);
+
+    $st->execute([$userid]);
+   exit;
+  }else{
+
+    echo json_encode(["status" => "error"]);
+    exit;
+  }
+}
 
 echo "jetOrder API";
 exit();

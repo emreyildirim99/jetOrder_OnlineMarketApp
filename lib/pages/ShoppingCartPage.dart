@@ -138,6 +138,9 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                   ),
                   SizedBox(height: 10,),
                   InkWell(
+                    onTap: (){
+                      Navigator.pushNamed(context, '/PaymentPage');
+                    },
                     child: Container(
                         padding: EdgeInsets.all(20),
                         height: 70,
