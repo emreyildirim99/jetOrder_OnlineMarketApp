@@ -8,6 +8,7 @@ import 'pages/ProductInfoPage.dart';
 import 'pages/ProductListPage.dart';
 import 'pages/ProfilePage.dart';
 import 'pages/PaymentPage.dart';
+import 'pages/MyOrdersPage.dart';
 
 
 void main() async{
@@ -27,6 +28,7 @@ void main() async{
       '/ShoppingCartPage' : (context)=>ShoppingCartPage(),
       '/ProfilePage' : (context)=>ProfilePage(),
       '/PaymentPage' : (context)=>PaymentPage(),
+      '/MyOrdersPage' : (context)=>MyOrdersPage(),
     },
   ));
 

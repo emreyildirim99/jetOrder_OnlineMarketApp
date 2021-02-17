@@ -114,6 +114,10 @@ if ($_POST["operation"] == "placeOrder") {
  PlaceOrder($_POST["userID"], $_POST["totalPrice"]);
 }
 
+if ($_POST["operation"] == "getOrders") {
+ GetOrders($_POST["userID"]);
+}
+
 // operations end
 
 function Register($name,$phone,$email,$password,$province,$district,$address)
@@ -482,6 +486,20 @@ function PlaceOrder($userid,$totalPrice)
     exit;
   }
 }
+
+
+function GetOrders($userid)
+{
+  global $con;
+
+  $sql = "SELECT DISTINCT orderCode , orderStatus , orderDate, orderTotalPrice FROM orders WHERE orderCustomerID = ? ORDER BY orderDate DESC";
+  $st = $con->prepare($sql);
+  $st->execute([$userid]);
+  $all = $st->fetchAll(PDO::FETCH_ASSOC);
+  echo json_encode($all);
+  exit();
+}
+
 
 echo "jetOrder API";
 exit();

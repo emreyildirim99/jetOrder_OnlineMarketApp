@@ -69,6 +69,7 @@ class _HomePageState extends State<HomePage> {
     Navigator.pushNamed(context, '/ProductListPage', arguments: {'categoryID': -1});
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -288,6 +289,8 @@ class _HomePageState extends State<HomePage> {
                     getFavoriteProducts();
                   }else if(selectedIndex == 2){
                     Navigator.pushNamed(context, '/ShoppingCartPage');
+                  }else if(selectedIndex == 3){
+                    Navigator.pushNamed(context, '/MyOrdersPage');
                   }else if(selectedIndex == 4){
                     Navigator.pushNamed(context, '/ProfilePage');
                   }

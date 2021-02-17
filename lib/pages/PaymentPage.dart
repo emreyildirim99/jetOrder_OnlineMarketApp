@@ -58,7 +58,7 @@ class _PaymentPageState extends State<PaymentPage> {
                             fontSize: 20
                         )),
                         SizedBox(height: 20,),
-                        Text(" ${orderData[0]["userAddress"]} ${orderData[0]["userProvince"]} / ${orderData[0]["userDistrict"]}", style: headingStyle.copyWith(
+                        Text("${orderData[0]["userAddress"]} ${orderData[0]["userProvince"]} / ${orderData[0]["userDistrict"]}", style: headingStyle.copyWith(
                             fontSize: 17
                         )),
                       ],),

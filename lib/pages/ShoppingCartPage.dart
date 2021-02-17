@@ -139,7 +139,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                   SizedBox(height: 10,),
                   InkWell(
                     onTap: (){
-                      Navigator.pushNamed(context, '/PaymentPage');
+                      totalPrice[0]['cartPrice'] != null ? Navigator.pushNamed(context, '/PaymentPage') : null;
                     },
                     child: Container(
                         padding: EdgeInsets.all(20),
@@ -185,7 +185,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                    child: Icon(Icons.clear, color: Colors.red, size: 17,),
+                    child: Icon(Icons.clear, color: Colors.red, size: 22,),
                     onTap: (){
 
                       SweetAlert.show(context,
