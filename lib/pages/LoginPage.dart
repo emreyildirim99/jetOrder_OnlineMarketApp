@@ -76,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                   fontSize: 30,
                   fontWeight: FontWeight.w700,
                 ),),
-                Icon(Icons.shopping_cart_rounded,color: Colors.black, size: 30,),
+                Icon(Icons.shopping_cart_rounded,color: Colors.blueAccent, size: 30,),
                 Text(" jetOrder", style: TextStyle(
                   color: HexColor("#83CC98"),
                   fontSize: 30,

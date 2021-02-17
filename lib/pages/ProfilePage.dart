@@ -52,8 +52,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
-        title: Center(child: Text("jetOrder - Profile Update")),
+        title: Padding(
+          padding: const EdgeInsets.only(right: 40),
+          child: Center(child: Text("jetOrder - Profile Update")),
+        ),
         elevation: 0,
         leading: IconButton(
           icon: Icon(
@@ -68,12 +70,12 @@ class _ProfilePageState extends State<ProfilePage> {
         builder: (context, snapshot){
           if(snapshot.hasError) print(snapshot.error);
           if(snapshot.hasData){
-            selectedDistrict = snapshot.data[0]['userDistrict'];
-            selectedProvince = snapshot.data[0]['userProvince'];
-            address.text = snapshot.data[0]['userAddress'];
-            email.text = snapshot.data[0]['userEmail'];
-            name.text = snapshot.data[0]['userName'];
-            phone.text  = snapshot.data[0]['userPhone'];
+              selectedDistrict = snapshot.data[0]['userDistrict'];
+              selectedProvince = snapshot.data[0]['userProvince'];
+              address.text = snapshot.data[0]['userAddress'];
+              email.text = snapshot.data[0]['userEmail'];
+              name.text = snapshot.data[0]['userName'];
+              phone.text  = snapshot.data[0]['userPhone'];
             return Container(
               padding: EdgeInsets.all(20),
               child: Column(

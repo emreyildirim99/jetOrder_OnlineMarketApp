@@ -20,8 +20,10 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
-        title: Center(child: Text("jetOrder - My Orders")),
+        title: Padding(
+          padding: const EdgeInsets.only(right: 40),
+          child: Center(child: Text("jetOrder - My Orders")),
+        ),
         elevation: 0,
         leading: IconButton(
           icon: Icon(

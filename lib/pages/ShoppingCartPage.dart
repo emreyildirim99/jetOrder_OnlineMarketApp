@@ -64,7 +64,6 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
         title: Center(child: Text("jetOrder - Shopping Cart")),
         elevation: 0,
         leading: IconButton(

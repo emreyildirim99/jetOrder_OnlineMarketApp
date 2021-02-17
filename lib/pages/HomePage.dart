@@ -66,12 +66,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getFavoriteProducts(){
-    Navigator.pushNamed(context, '/ProductListPage', arguments: {'categoryID': -1});
+    Navigator.pushNamed(context, '/ProductListPage', arguments: {'categoryID': -1}).then((value) => setState(() {selectedIndex = 0;}));
   }
 
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: searchBar.build(context),
       body: Container(
@@ -288,11 +290,11 @@ class _HomePageState extends State<HomePage> {
                   if(selectedIndex == 1){
                     getFavoriteProducts();
                   }else if(selectedIndex == 2){
-                    Navigator.pushNamed(context, '/ShoppingCartPage');
+                    Navigator.pushNamed(context, '/ShoppingCartPage').then((value) => setState(() {selectedIndex = 0;}));
                   }else if(selectedIndex == 3){
-                    Navigator.pushNamed(context, '/MyOrdersPage');
+                    Navigator.pushNamed(context, '/MyOrdersPage').then((value) => setState(() {selectedIndex = 0;}));
                   }else if(selectedIndex == 4){
-                    Navigator.pushNamed(context, '/ProfilePage');
+                    Navigator.pushNamed(context, '/ProfilePage').then((value) => setState(() {selectedIndex = 0;}));
                   }
                 });
               },

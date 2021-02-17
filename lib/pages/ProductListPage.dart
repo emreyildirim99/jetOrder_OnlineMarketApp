@@ -5,7 +5,7 @@ import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:sweetalert/sweetalert.dart';
 import 'package:hexcolor/hexcolor.dart';
-
+import 'package:emre_yildirim_jetorder/services/ShoppingCartService.dart';
 
 class ProductListPage extends StatefulWidget {
   @override
@@ -48,7 +48,8 @@ class _ProductListPageState extends State<ProductListPage> {
 
   void openProductInfo(int id, String photoUrl, String price, String name, String quantity,String desc)
   {
-    Navigator.pushNamed(context, '/ProductInfoPage', arguments: {'id': id, 'photoUrl':photoUrl, 'name':name, 'desc':desc, 'quantity':quantity, 'price':price});
+    Navigator.pushNamed(context, '/ProductInfoPage', arguments: {'id': id, 'photoUrl':photoUrl, 'name':name, 'desc':desc, 'quantity':quantity, 'price':price}).then((value) => setState(() {}));
+
   }
 
   ProductService productHelper = new ProductService();
@@ -126,6 +127,16 @@ class _ProductListPageState extends State<ProductListPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 InkWell(
+                  onTap: () async{
+                    ShoppingCartService addProduct = new ShoppingCartService(userID: await FlutterSession().get('userID'), productID: int.parse(products[id]["productID"]), quantity: 1);
+                    var result = await addProduct.addShoppingCart();
+                    if(result=='success'){
+                      SweetAlert.show(context,
+                          title: "Successful!",
+                          subtitle: "Successfully added product to your cart.",
+                          style: SweetAlertStyle.success);
+                    }
+                  },
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     width: 150,

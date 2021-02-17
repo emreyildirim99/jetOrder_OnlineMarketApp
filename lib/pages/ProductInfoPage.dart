@@ -18,7 +18,6 @@ class _ProductInfoState extends State<ProductInfo> {
   var productID;
   Map<String, Object> productData = {};
 
-
   void addProductToCart() async{
 
     ShoppingCartService shoppingCart = new ShoppingCartService(userID: await FlutterSession().get('userID'), productID: productID, quantity: productQuantity);
@@ -40,11 +39,10 @@ class _ProductInfoState extends State<ProductInfo> {
 
     productID = productData['id'];
 
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
         elevation: 0,
+        title: Center(child: Text("jetOrder - Product Information")),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
@@ -118,7 +116,7 @@ class _ProductInfoState extends State<ProductInfo> {
             ),
             Container(
               color: HexColor("#83CC98"),
-              padding: EdgeInsets.only(left: 160, top: 10),
+              padding: EdgeInsets.only(left: 140, top: 10),
 
               child: Row(
                 children: <Widget>[
