@@ -6,7 +6,7 @@ include_once "db.php";
 //Operations start
 
 if ($_POST["operation"] == "register") {
-  if (
+ if (
     $_POST["userName"] == "" or
     $_POST["userPhone"] == "" or
     $_POST["userEmail"] == "" or
@@ -54,6 +54,47 @@ if ($_POST["operation"] == "addShoppingCart") {
   AddShoppingCart($_POST["userID"], $_POST["productID"],$_POST["quantity"]);
 }
 
+if ($_POST["operation"] == "getShoppingCart") {
+ GetShoppingCart($_POST["userID"]);
+}
+
+if ($_POST["operation"] == "getTotalPrice") {
+ GetTotalPrice($_POST["userID"]);
+}
+
+if ($_POST["operation"] == "getProfileData") {
+ GetProfileData($_POST["userID"]);
+}
+
+
+if ($_POST["operation"] == "updateProfileData") {
+  if (
+    $_POST["userPassword"] == "" or
+    $_POST["userProvince"] == "" or
+    $_POST["userDistrict"] == "" or
+    $_POST["userAddress"] == ""
+  ) {
+    echo json_encode(["status" => "error"]);
+    exit();
+  } else {
+    UpdateProfileData(
+      $_POST["userID"],
+      $_POST["userPassword"],
+      $_POST["userProvince"],
+      $_POST["userDistrict"],
+      $_POST["userAddress"]
+    );
+  }
+
+}
+
+if ($_POST["operation"] == "addProductShoppingCart") {
+ AddProductShoppingCart($_POST["userID"], $_POST["productID"]);
+}
+
+if ($_POST["operation"] == "removeProductShoppingCart") {
+ RemoveProductShoppingCart($_POST["userID"], $_POST["productID"]);
+}
 
 // operations end
 
@@ -223,6 +264,121 @@ function AddShoppingCart($userid,$productid,$quantity)
 
 
  }
+
+}
+
+function GetShoppingCart($userid)
+{
+  global $con;
+
+  $sql = "SELECT productID, productName, productPhoto, productPrice, productQuantity, cartQuantity, productPrice * cartQuantity AS totalPrice FROM shoppingCart INNER JOIN products ON cartProductID = productID WHERE cartUserID = ?";
+  $sql2 = "SELECT SUM(productPrice * cartQuantity) as cartPrice FROM shoppingCart INNER JOIN products ON cartProductID = productID WHERE cartUserID = ?";
+  $st = $con->prepare($sql);
+  $st2 = $con->prepare($sql2);
+  $st->execute([$userid]);
+  $st2->execute([$userid]);
+  $all = $st->fetchAll(PDO::FETCH_ASSOC);
+  $totalPrice = $st2->fetchAll(PDO::FETCH_ASSOC);
+  echo json_encode($all);
+  exit();
+}
+
+
+function GetTotalPrice($userid)
+{
+  global $con;
+
+  $sql = "SELECT SUM(productPrice * cartQuantity) as cartPrice FROM shoppingCart INNER JOIN products ON cartProductID = productID WHERE cartUserID = ?";
+
+  $st = $con->prepare($sql);
+
+  $st->execute([$userid]);
+
+  $totalPrice = $st->fetchAll(PDO::FETCH_ASSOC);
+  echo json_encode($totalPrice);
+  exit();
+}
+
+
+function GetProfileData($userid)
+{
+  global $con;
+
+  $sql = "SELECT * FROM users WHERE userID = ?";
+
+  $st = $con->prepare($sql);
+
+  $st->execute([$userid]);
+
+  $userData = $st->fetchAll(PDO::FETCH_ASSOC);
+  echo json_encode($userData);
+  exit();
+}
+
+
+function UpdateProfileData($userid,$password,$province,$district,$address)
+{
+  global $con;
+
+    $sql = "UPDATE users SET
+      userPassword = ?,
+      userProvince = ?,
+      userDistrict = ?,
+      userAddress = ? WHERE userID = ?";
+    $st = $con->prepare($sql);
+
+    $st->execute([md5($password), $province, $district, $address, $userid]);
+    if ($st) {
+      echo json_encode(["status" => "success"]);
+      exit();
+    } else {
+      echo json_encode(["status" => "error"]);
+      exit();
+    }
+
+}
+
+
+function AddProductShoppingCart($userid,$productid)
+{
+   global $con;
+
+    $sql = "UPDATE shoppingCart SET
+      cartQuantity = cartQuantity + 1 WHERE cartUserID = ? AND cartProductID = ?";
+
+    $st = $con->prepare($sql);
+
+    $st->execute([$userid,$productid]);
+
+    if ($st) {
+      echo json_encode(["status" => "success"]);
+      exit();
+    } else {
+      echo json_encode(["status" => "error"]);
+      exit();
+    }
+
+}
+
+
+function RemoveProductShoppingCart($userid,$productid)
+{
+   global $con;
+
+    $sql = "UPDATE shoppingCart SET
+      cartQuantity = cartQuantity - 1 WHERE cartUserID = ? AND cartProductID = ?";
+
+    $st = $con->prepare($sql);
+
+    $st->execute([$userid,$productid]);
+
+    if ($st) {
+      echo json_encode(["status" => "success"]);
+      exit();
+    } else {
+      echo json_encode(["status" => "error"]);
+      exit();
+    }
 
 }
 
