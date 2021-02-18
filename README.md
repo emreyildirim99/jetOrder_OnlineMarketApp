@@ -14,16 +14,16 @@
   
   On the favorite products page, users can see their favorite products to order them fast also they can remove these products from their favorite list.
   
-  On the shopping cart page, users can see the products and their information (e.g. total price of products) in the shopping cart. Also, they can remove all or a specific product from the shopping cart, increase or decrease the quantity of them. After each user's action on this page, all the information on this page is updated instantaneously and dynamically thanks to API.
+  On the shopping cart page, users can see the products and their information (e.g. total price of products) in the shopping cart and order them by using a credit card on the payment page. Also, they can remove all or a specific product from the shopping cart, increase or decrease the quantity of them. After each user's action on this page, all the information on this page is updated instantaneously and dynamically thanks to API.
   
-  On my orders page, users can see their all orders and track the status of the orders (whether they are on the way or delivered)
+  On my orders page, users can see their all orders and track the status of the orders (whether they are on the way or delivered).
   
   On the profile page, users can change the password or delivery address information.
   
-## 💻 Framework and Programming Languages Used in the jetorder
+## 💻 Framework and Programming Languages Used in the jetOrder
    * **Flutter & Dart**: jetOrder is developed with Flutter and Dart. I designed the UI of jetOrder as minimal and simple for a fast and effective shopping experience by using UI widgets. Also, I created services for each page that are necessary for API communication. These services send a post request to API according to the operation and get the data from the API. Since these processes are asynchronous, I used FutureBuilder to get the data. I also use some additional classes such as sessions to keep users logged in the app and for auto-login.
 
-  * **PHP**: I coded the API with PHP. All functions in jetOrder app are performed thanks to this API.
+  * **PHP**: I coded the API with PHP. All functions in jetOrder app are performed thanks to this API. The API returns JSON responses to be used on the Flutter side.
 
   * **MySQL**: I created the database and also schema in MySQL and API communicates with this MySQL server. All data (users, products, etc.) about jetOrder is stored here.
 
