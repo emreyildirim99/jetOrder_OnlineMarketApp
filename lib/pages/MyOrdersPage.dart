@@ -84,7 +84,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                     margin: EdgeInsets.all(10),
                     height: 50,
                     width: 50,
-                    child: Icon(Icons.delivery_dining,size: 50, color: Colors.green,),
+                    child: Icon(orders[id]["orderStatus"] == "0" ? Icons.delivery_dining: Icons.check_box,size: 50, color: orders[id]["orderStatus"] == "0" ? Colors.orange : Colors.green,),
                   ),
                 ),
                 Expanded(
@@ -104,10 +104,10 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                 Row(
                     children: [
                       Container(
-
                         child: Center(
                           child: Text("${orders[id]["orderStatus"] == "0" ? "On the way" : "Delivered"}", style: headingStyle.copyWith(
-                              fontSize: 20
+                              fontSize: 20,
+                            color: orders[id]["orderStatus"] == "0" ? Colors.orange : Colors.green
                           )),
                         ),
                       )

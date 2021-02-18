@@ -61,8 +61,8 @@ class _ProductInfoState extends State<ProductInfo> {
               if(result=='addedSuccess'){
 
                 SweetAlert.show(context,
-                    title: "Successful!",
-                    subtitle: "Successfully added to your favorites.",
+                    title: "Added!",
+                    subtitle: "Added to your favorites.",
                     style: SweetAlertStyle.success);
 
                 setState(() {
@@ -71,9 +71,9 @@ class _ProductInfoState extends State<ProductInfo> {
 
               }else if(result=='removedSuccess'){
                 SweetAlert.show(context,
-                    title: "Successful!",
-                    subtitle: "Successfully removed from your favorites.",
-                    style: SweetAlertStyle.success);
+                    title: "Removed!",
+                    subtitle: "Removed from your favorites.",
+                    style: SweetAlertStyle.error);
 
                 setState(() {
                   isFavorite  = !isFavorite;
@@ -81,7 +81,7 @@ class _ProductInfoState extends State<ProductInfo> {
               }
 
             },
-              color: isFavorite ? Colors.red : Colors.white,)
+              color: isFavorite ? Colors.white : Colors.white,)
         ],
       ),
       body: Container(

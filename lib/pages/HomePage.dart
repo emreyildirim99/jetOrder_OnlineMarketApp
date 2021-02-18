@@ -76,15 +76,17 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: searchBar.build(context),
-      body: Container(
-          color: Colors.white,
-          child: Column(
-            children: <Widget>[
-              Center(child: Image.asset('assets/images/banner.png',width: 250,height: 250,)),
-              createCategories(),
-            ],
+      body: SingleChildScrollView(
+        child: Container(
+            color: Colors.white,
+            child: Column(
+              children: <Widget>[
+                Center(child: Image.asset('assets/images/banner.png',width: 250,height: 250,)),
+                createCategories(),
+              ],
+            ),
           ),
-        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(),
     );
   }
@@ -123,7 +125,7 @@ class _HomePageState extends State<HomePage> {
               width: 85,
               padding: const EdgeInsets.all(25),
               decoration: BoxDecoration(
-                color: Colors.blueAccent,
+                color: Colors.blue,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),

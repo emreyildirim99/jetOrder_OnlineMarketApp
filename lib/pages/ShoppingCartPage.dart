@@ -135,7 +135,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                       Text("${totalPrice[0]['cartPrice']}₺", style: headingStyle,)
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(height: 25,),
                   InkWell(
                     onTap: (){
                       totalPrice[0]['cartPrice'] != null ? Navigator.pushNamed(context, '/PaymentPage') : null;

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
+import 'package:emre_yildirim_jetorder/constants/Constants.dart' as Constants;
 
 class ProductService{
 
@@ -11,7 +12,7 @@ class ProductService{
    if(id == '0'){
 
      //Make POST Request to API
-     final response = await http.post("http://10.0.2.2/jetorder/index.php", body:{
+     final response = await http.post(Constants.API_URL, body:{
        "operation": "getSearchedProducts",
        "productName": productName
      });
@@ -29,7 +30,7 @@ class ProductService{
      var userID = await FlutterSession().get('userID');
 
      //Make POST Request to API
-     final response = await http.post("http://10.0.2.2/jetorder/index.php", body:{
+     final response = await http.post(Constants.API_URL, body:{
        "operation": "getFavoriteProducts",
        "userID": userID.toString(),
      });
@@ -45,7 +46,7 @@ class ProductService{
    }
    else{
      //Make POST Request to API
-     final response = await http.post("http://10.0.2.2/jetorder/index.php", body:{
+     final response = await http.post(Constants.API_URL, body:{
        "operation": "getProducts",
        "categoryID": id,
      });

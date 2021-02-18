@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:emre_yildirim_jetorder/constants/Constants.dart' as Constants;
 
 class FavoriteProductService{
 
@@ -15,7 +16,7 @@ class FavoriteProductService{
 
 
      //Make POST Request to API
-    final response = await http.post("http://10.0.2.2/jetorder/index.php", body:{
+    final response = await http.post(Constants.API_URL, body:{
       "operation": "addFavorite",
       "userID": this.userID.toString(),
       "productID" : this.productID.toString(),
@@ -35,7 +36,7 @@ class FavoriteProductService{
 
 
     //Make POST Request to API
-    final response = await http.post("http://10.0.2.2/jetorder/index.php", body:{
+    final response = await http.post(Constants.API_URL, body:{
       "operation": "isFavorite",
       "userID": this.userID.toString(),
       "productID" : this.productID.toString(),

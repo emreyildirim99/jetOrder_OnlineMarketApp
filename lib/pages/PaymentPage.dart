@@ -19,7 +19,6 @@ class _PaymentPageState extends State<PaymentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
         title: Center(child: Text("jetOrder - Payment")),
         elevation: 0,
         leading: IconButton(
@@ -51,6 +50,7 @@ class _PaymentPageState extends State<PaymentPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Center(child: Icon(Icons.credit_card,size: 60,)),
                   Center(
                     child: Container(
                       child: Column(children: [
@@ -126,7 +126,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),),
                     ),
                   ),
-
+                Container(child: Image.network("https://storage.j0.hn/credit-card-logos.png",),width: 200,),
                 ],
               ),
             );
