@@ -117,6 +117,11 @@ if ($_POST["operation"] == "getOrders") {
  GetOrders($_POST["userID"]);
 }
 
+
+if ($_POST["operation"] == "giveStar") {
+ GiveStar($_POST["userID"],$_POST["productID"],$_POST["point"],$_POST["categoryID"]);
+}
+
 // operations end
 
 function Register($name,$phone,$email,$password,$province,$district,$address)
@@ -497,6 +502,43 @@ function GetOrders($userid)
   $all = $st->fetchAll(PDO::FETCH_ASSOC);
   echo json_encode($all);
   exit();
+}
+
+function GiveStar($userid,$productid,$point,$categoryid)
+{
+  global $con;
+
+
+  $checkRating = "SELECT * FROM productRatings WHERE ratingCustomerID = ? AND ratingProductID = ?";
+  $st2 = $con->prepare($checkRating);
+  $st2->execute([$userid,$productid]);
+  $all = $st2->fetchAll();
+
+ if(count($all) > 0){
+  $sql = "UPDATE productRatings SET ratingPoint = ? WHERE ratingCustomerID = ? AND ratingProductID = ?";
+  $st = $con->prepare($sql);
+  $st->execute([$point, $userid,$productid]);
+  if($st){
+   echo json_encode(["status" => "success"]);
+   exit;
+  }
+ }else{
+  $sql = "INSERT INTO productRatings SET ratingPoint = ? , ratingCategoryID = ? , ratingCustomerID = ?, ratingProductID = ? ";
+  $st = $con->prepare($sql);
+  $st->execute([$point,$categoryid,$userid,$productid]);
+  if($st){
+
+   echo json_encode(["status" => "success"]);
+   exit;
+
+  }else{
+
+    echo json_encode(["status" => "error"]);
+    exit;
+  }
+
+
+ }
 }
 
 echo "jetOrder API";

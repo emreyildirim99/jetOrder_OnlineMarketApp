@@ -5,6 +5,12 @@ import 'package:emre_yildirim_jetorder/constants/Constants.dart' as Constants;
 
 class ProductService{
 
+  String productID;
+  String categoryID;
+  double productPoint;
+
+  ProductService({this.productPoint,this.productID,this.categoryID});
+
 
   Future<List> getProducts(String id, String productName) async{
 
@@ -59,6 +65,30 @@ class ProductService{
      //Return response
      return result;
    }
+  }
+
+  Future giveStar () async{
+
+    var userID = await FlutterSession().get('userID');
+
+    //Make POST Request to API
+    final response = await http.post(Constants.API_URL, body:{
+      "operation": "giveStar",
+      "userID": userID.toString(),
+      "productID" : this.productID.toString(),
+      "categoryID" : this.categoryID.toString(),
+      "point" : this.productPoint.toString(),
+    });
+
+    var result;
+    if(response.body.isNotEmpty) {
+      result = json.decode(response.body);
+    }
+
+
+    //Return whether request is successful
+    return result["status"];
+
   }
 
 }

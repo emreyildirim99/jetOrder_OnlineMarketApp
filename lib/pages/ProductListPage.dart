@@ -3,6 +3,7 @@ import 'package:emre_yildirim_jetorder/pages/ProductInfoPage.dart';
 import 'package:emre_yildirim_jetorder/services/ProductService.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:flutter_session/flutter_session.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:sweetalert/sweetalert.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:emre_yildirim_jetorder/services/ShoppingCartService.dart';
@@ -56,9 +57,12 @@ class _ProductListPageState extends State<ProductListPage> {
 
   List products;
 
+  var categoryID;
+
   @override
   Widget build(BuildContext context) {
     final Map<String, Object> categoryData = ModalRoute.of(context).settings.arguments;
+
 
     return Scaffold(
       appBar: searchBar.build(context),
@@ -68,6 +72,7 @@ class _ProductListPageState extends State<ProductListPage> {
           if(snapshot.hasError) print(snapshot.error);
           if(snapshot.hasData){
             products = snapshot.data;
+            categoryID = categoryData["categoryID"].toString();
             return Container(
               padding: EdgeInsets.all(20),
               child: GridView.count(crossAxisCount: 2,
@@ -86,8 +91,9 @@ class _ProductListPageState extends State<ProductListPage> {
   }
   Container listProducts(int id)
   {
-
+    var rating = double.parse(products[id]["productPoint"]);
     var productID = int.parse(products[id]["productID"]);
+
     return Container(
       padding: EdgeInsets.all(10),
       color: Colors.white,
@@ -117,6 +123,28 @@ class _ProductListPageState extends State<ProductListPage> {
                   fontWeight: FontWeight.w600
               ),),
             ),
+          SmoothStarRating(
+            rating: rating,
+            isReadOnly: false,
+            size: 25,
+            filledIconData: Icons.star,
+            halfFilledIconData: Icons.star_half,
+            defaultIconData: Icons.star_border,
+            starCount: 5,
+            allowHalfRating: false,
+            spacing: 2.0,
+            onRated: (value) async{
+              ProductService point = new ProductService(productID: products[id]["productID"], productPoint: value, categoryID: categoryID);
+              var status = await point.giveStar();
+              if(status == 'success'){
+
+                SweetAlert.show(context,
+                    title: "Rated!",
+                    subtitle: "You give $value point !",
+                    style: SweetAlertStyle.success);
+              }
+            },
+          ),
             Container(
               margin: EdgeInsets.only(top: 5),
               height: 0.5,

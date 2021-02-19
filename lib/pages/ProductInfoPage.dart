@@ -117,7 +117,6 @@ class _ProductInfoState extends State<ProductInfo> {
             Container(
               color: HexColor("#83CC98"),
               padding: EdgeInsets.only(left: 140, top: 10),
-
               child: Row(
                 children: <Widget>[
                   Container(

@@ -36,7 +36,7 @@ dependencies:
   flutter_search_bar: ^2.1.0
   flutter_session: ^0.1.1
   decimal: ^0.3.0
-
+  smooth_star_rating: ^1.1.1
 
 dev_dependencies:
   flutter_test:
