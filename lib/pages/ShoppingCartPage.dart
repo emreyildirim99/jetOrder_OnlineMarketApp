@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:emre_yildirim_jetorder/helpers/Style.dart';
 import 'package:emre_yildirim_jetorder/services/ShoppingCartService.dart';
-import 'package:decimal/decimal.dart';
 import 'package:sweetalert/sweetalert.dart';
 
 class ShoppingCartPage extends StatefulWidget {
@@ -132,7 +129,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                           Text("Total Price:", style: headingStyle,),
                         ],
                       ),
-                      Text("${totalPrice[0]['cartPrice']}₺", style: headingStyle,)
+                      Text("${totalPrice[0]['cartPrice'] == null ? 0 : totalPrice[0]['cartPrice'] }₺", style: headingStyle,)
                     ],
                   ),
                   SizedBox(height: 25,),

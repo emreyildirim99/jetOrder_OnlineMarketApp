@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:emre_yildirim_jetorder/pages/ProductInfoPage.dart';
 import 'package:emre_yildirim_jetorder/services/ProductService.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:flutter_session/flutter_session.dart';
@@ -44,6 +43,7 @@ class _ProductListPageState extends State<ProductListPage> {
   }
 
   void getSearchedProduct(String productName){
+    Navigator.pop(context);
     Navigator.pushNamed(context, '/ProductListPage', arguments: {'categoryID': 0,'productName': productName});
   }
 

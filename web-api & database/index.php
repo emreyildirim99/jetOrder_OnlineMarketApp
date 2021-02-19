@@ -8,27 +8,27 @@ include_once "db.php";
 
 if ($_POST["operation"] == "register") {
  if (
-    $_POST["userName"] == "" or
-    $_POST["userPhone"] == "" or
-    $_POST["userEmail"] == "" or
-    $_POST["userPassword"] == "" or
-    $_POST["userProvince"] == "" or
-    $_POST["userDistrict"] == "" or
-    $_POST["userAddress"] == ""
-  ) {
-    echo json_encode(["status" => "error"]);
-    exit();
-  } else {
-    Register(
-      $_POST["userName"],
-      $_POST["userPhone"],
-      $_POST["userEmail"],
-      $_POST["userPassword"],
-      $_POST["userProvince"],
-      $_POST["userDistrict"],
-      $_POST["userAddress"]
-    );
-  }
+  $_POST["userName"] == "" or
+  $_POST["userPhone"] == "" or
+  $_POST["userEmail"] == "" or
+  $_POST["userPassword"] == "" or
+  $_POST["userProvince"] == "" or
+  $_POST["userDistrict"] == "" or
+  $_POST["userAddress"] == ""
+) {
+  echo json_encode(["status" => "error"]);
+  exit();
+} else {
+  Register(
+    $_POST["userName"],
+    $_POST["userPhone"],
+    $_POST["userEmail"],
+    $_POST["userPassword"],
+    $_POST["userProvince"],
+    $_POST["userDistrict"],
+    $_POST["userAddress"]
+  );
+}
 }
 
 if ($_POST["operation"] == "login") {
@@ -122,6 +122,10 @@ if ($_POST["operation"] == "giveStar") {
  GiveStar($_POST["userID"],$_POST["productID"],$_POST["point"],$_POST["categoryID"]);
 }
 
+if ($_POST["operation"] == "getOrderDetails") {
+ GetOrderDetails($_POST["orderCode"]);
+}
+
 // operations end
 
 function Register($name,$phone,$email,$password,$province,$district,$address)
@@ -133,13 +137,13 @@ function Register($name,$phone,$email,$password,$province,$district,$address)
   $all = $st2->fetchAll();
   if (count($all) < 1) {
     $sql = "INSERT INTO users SET
-      userName = ?,
-      userPhone = ?,
-      userEmail = ?,
-      userPassword = ?,
-      userProvince = ?,
-      userDistrict = ?,
-      userAddress = ?";
+    userName = ?,
+    userPhone = ?,
+    userEmail = ?,
+    userPassword = ?,
+    userProvince = ?,
+    userDistrict = ?,
+    userAddress = ?";
     $st = $con->prepare($sql);
 
     $st->execute([$name, $phone, $email, md5($password), $province, $district, $address]);
@@ -162,7 +166,7 @@ function Login($email, $password)
   global $con;
 
   $sql =
-    "SELECT userID,userName,userEmail FROM users WHERE userEmail=? AND userPassword=?";
+  "SELECT userID,userName,userEmail FROM users WHERE userEmail=? AND userPassword=?";
   $st = $con->prepare($sql);
   $st->execute([$email, md5($password)]); //encrypt password
   $all = $st->fetchAll();
@@ -173,8 +177,8 @@ function Login($email, $password)
     exit();
   }
 
-     echo json_encode(["status" => "error","userID" => 0]);
-     exit();
+  echo json_encode(["status" => "error","userID" => 0]);
+  exit();
 
 }
 
@@ -214,13 +218,13 @@ function AddFavorite($userid,$productid)
   $all = $st2->fetchAll();
 
   if(count($all) > 0){
-  $sql = "DELETE FROM favorites WHERE favoriteProductID = ? AND favoriteUserID = ?";
-  $st = $con->prepare($sql);
-  $st->execute([$productid,$userid]);
-  if($st){
-   echo json_encode(["status" => "removedSuccess"]);
-   exit;
-  }
+    $sql = "DELETE FROM favorites WHERE favoriteProductID = ? AND favoriteUserID = ?";
+    $st = $con->prepare($sql);
+    $st->execute([$productid,$userid]);
+    if($st){
+     echo json_encode(["status" => "removedSuccess"]);
+     exit;
+   }
  }else{
   $sql = "INSERT INTO favorites SET favoriteProductID = ? , favoriteUserID = ?";
   $st = $con->prepare($sql);
@@ -230,11 +234,11 @@ function AddFavorite($userid,$productid)
    echo json_encode(["status" => "addedSuccess"]);
    exit;
 
-  }else{
+ }else{
 
-    echo json_encode(["status" => "error"]);
-    exit;
-  }
+  echo json_encode(["status" => "error"]);
+  exit;
+}
 
 }
 
@@ -246,7 +250,7 @@ function GetFavoriteProducts($userid)
 {
   global $con;
 
-  $sql = "SELECT productID, productName, productPhoto, productPrice, productDesc, productQuantity, productCategory FROM favorites INNER JOIN products ON favoriteProductID = productID WHERE favoriteUserID = ?";
+  $sql = "SELECT productID, productName, productPhoto, productPrice, productDesc, productQuantity, productCategory, productPoint FROM favorites INNER JOIN products ON favoriteProductID = productID WHERE favoriteUserID = ?";
   $st = $con->prepare($sql);
   $st->execute([$userid]);
   $all = $st->fetchAll(PDO::FETCH_ASSOC);
@@ -265,14 +269,14 @@ function AddShoppingCart($userid,$productid,$quantity)
   $st2->execute([$userid,$productid]);
   $all = $st2->fetchAll();
 
- if(count($all) > 0){
-  $sql = "UPDATE shoppingCart SET cartQuantity = cartQuantity + ? WHERE cartUserID = ? AND cartProductID = ?";
-  $st = $con->prepare($sql);
-  $st->execute([$quantity,$userid,$productid]);
-  if($st){
-   echo json_encode(["status" => "success"]);
-   exit;
-  }
+  if(count($all) > 0){
+    $sql = "UPDATE shoppingCart SET cartQuantity = cartQuantity + ? WHERE cartUserID = ? AND cartProductID = ?";
+    $st = $con->prepare($sql);
+    $st->execute([$quantity,$userid,$productid]);
+    if($st){
+     echo json_encode(["status" => "success"]);
+     exit;
+   }
  }else{
   $sql = "INSERT INTO shoppingCart SET cartProductID = ? , cartUserID = ?, cartQuantity = ? ";
   $st = $con->prepare($sql);
@@ -282,14 +286,14 @@ function AddShoppingCart($userid,$productid,$quantity)
    echo json_encode(["status" => "success"]);
    exit;
 
-  }else{
+ }else{
 
-    echo json_encode(["status" => "error"]);
-    exit;
-  }
+  echo json_encode(["status" => "error"]);
+  exit;
+}
 
 
- }
+}
 
 }
 
@@ -298,13 +302,9 @@ function GetShoppingCart($userid)
   global $con;
 
   $sql = "SELECT productID, productName, productPhoto, productPrice, productQuantity, cartQuantity, productPrice * cartQuantity AS totalPrice FROM shoppingCart INNER JOIN products ON cartProductID = productID WHERE cartUserID = ?";
-  $sql2 = "SELECT SUM(productPrice * cartQuantity) as cartPrice FROM shoppingCart INNER JOIN products ON cartProductID = productID WHERE cartUserID = ?";
   $st = $con->prepare($sql);
-  $st2 = $con->prepare($sql2);
   $st->execute([$userid]);
-  $st2->execute([$userid]);
   $all = $st->fetchAll(PDO::FETCH_ASSOC);
-  $totalPrice = $st2->fetchAll(PDO::FETCH_ASSOC);
   echo json_encode($all);
   exit();
 }
@@ -346,105 +346,105 @@ function UpdateProfileData($userid,$password,$province,$district,$address)
 {
   global $con;
 
-    $sql = "UPDATE users SET
-      userPassword = ?,
-      userProvince = ?,
-      userDistrict = ?,
-      userAddress = ? WHERE userID = ?";
-    $st = $con->prepare($sql);
+  $sql = "UPDATE users SET
+  userPassword = ?,
+  userProvince = ?,
+  userDistrict = ?,
+  userAddress = ? WHERE userID = ?";
+  $st = $con->prepare($sql);
 
-    $st->execute([md5($password), $province, $district, $address, $userid]);
-    if ($st) {
-      echo json_encode(["status" => "success"]);
-      exit();
-    } else {
-      echo json_encode(["status" => "error"]);
-      exit();
-    }
+  $st->execute([md5($password), $province, $district, $address, $userid]);
+  if ($st) {
+    echo json_encode(["status" => "success"]);
+    exit();
+  } else {
+    echo json_encode(["status" => "error"]);
+    exit();
+  }
 
 }
 
 
 function AddProductShoppingCart($userid,$productid)
 {
-   global $con;
+ global $con;
 
-    $sql = "UPDATE shoppingCart SET
-      cartQuantity = cartQuantity + 1 WHERE cartUserID = ? AND cartProductID = ?";
+ $sql = "UPDATE shoppingCart SET
+ cartQuantity = cartQuantity + 1 WHERE cartUserID = ? AND cartProductID = ?";
 
-    $st = $con->prepare($sql);
+ $st = $con->prepare($sql);
 
-    $st->execute([$userid,$productid]);
+ $st->execute([$userid,$productid]);
 
-    if ($st) {
-      echo json_encode(["status" => "success"]);
-      exit();
-    } else {
-      echo json_encode(["status" => "error"]);
-      exit();
-    }
+ if ($st) {
+  echo json_encode(["status" => "success"]);
+  exit();
+} else {
+  echo json_encode(["status" => "error"]);
+  exit();
+}
 
 }
 
 
 function RemoveProductShoppingCart($userid,$productid)
 {
-   global $con;
+ global $con;
 
-    $sql = "UPDATE shoppingCart SET
-      cartQuantity = cartQuantity - 1 WHERE cartUserID = ? AND cartProductID = ?";
+ $sql = "UPDATE shoppingCart SET
+ cartQuantity = cartQuantity - 1 WHERE cartUserID = ? AND cartProductID = ?";
 
-    $st = $con->prepare($sql);
+ $st = $con->prepare($sql);
 
-    $st->execute([$userid,$productid]);
+ $st->execute([$userid,$productid]);
 
-    if ($st) {
-      echo json_encode(["status" => "success"]);
-      exit();
-    } else {
-      echo json_encode(["status" => "error"]);
-      exit();
-    }
+ if ($st) {
+  echo json_encode(["status" => "success"]);
+  exit();
+} else {
+  echo json_encode(["status" => "error"]);
+  exit();
+}
 
 }
 
 function EmptyShoppingCart($userid)
 {
-   global $con;
+ global $con;
 
-    $sql = "DELETE FROM shoppingCart WHERE cartUserID = ?";
+ $sql = "DELETE FROM shoppingCart WHERE cartUserID = ?";
 
-    $st = $con->prepare($sql);
+ $st = $con->prepare($sql);
 
-    $st->execute([$userid]);
+ $st->execute([$userid]);
 
-    if ($st) {
-      echo json_encode(["status" => "success"]);
-      exit();
-    } else {
-      echo json_encode(["status" => "error"]);
-      exit();
-    }
+ if ($st) {
+  echo json_encode(["status" => "success"]);
+  exit();
+} else {
+  echo json_encode(["status" => "error"]);
+  exit();
+}
 
 }
 
 function DeleteProductShoppingCart($userid, $productid)
 {
-    global $con;
+  global $con;
 
-    $sql = "DELETE FROM shoppingCart WHERE cartUserID = ? AND cartProductID = ? ";
+  $sql = "DELETE FROM shoppingCart WHERE cartUserID = ? AND cartProductID = ? ";
 
-    $st = $con->prepare($sql);
+  $st = $con->prepare($sql);
 
-    $st->execute([$userid,$productid]);
+  $st->execute([$userid,$productid]);
 
-    if ($st) {
-      echo json_encode(["status" => "success"]);
-      exit();
-    } else {
-      echo json_encode(["status" => "error"]);
-      exit();
-    }
+  if ($st) {
+    echo json_encode(["status" => "success"]);
+    exit();
+  } else {
+    echo json_encode(["status" => "error"]);
+    exit();
+  }
 
 }
 
@@ -464,31 +464,31 @@ function PlaceOrder($userid,$totalPrice)
 {
 
  function generateRandomString($length = 5) {
-    return substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-  }
+  return substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+}
 
-  $code = generateRandomString();
+$code = generateRandomString();
 
-  global $con;
+global $con;
 
-  $sql = "INSERT INTO orders (orderCustomerID, orderProductID,orderQuantity,orderCode,orderTotalPrice)
-   SELECT cartUserID, cartProductID, cartQuantity, '$code' , $totalPrice  FROM shoppingCart
-   WHERE cartUserID = ?";
-  $st = $con->prepare($sql);
-  $st->execute([$userid]);
-  if($st){
-   echo json_encode(["status" => "success"]);
-    $sql = "DELETE FROM shoppingCart WHERE cartUserID = ?";
+$sql = "INSERT INTO orders (orderCustomerID, orderProductID,orderQuantity,orderCode,orderTotalPrice)
+SELECT cartUserID, cartProductID, cartQuantity, '$code' , $totalPrice  FROM shoppingCart
+WHERE cartUserID = ?";
+$st = $con->prepare($sql);
+$st->execute([$userid]);
+if($st){
+ echo json_encode(["status" => "success"]);
+ $sql = "DELETE FROM shoppingCart WHERE cartUserID = ?";
 
-    $st = $con->prepare($sql);
+ $st = $con->prepare($sql);
 
-    $st->execute([$userid]);
-   exit;
-  }else{
+ $st->execute([$userid]);
+ exit;
+}else{
 
-    echo json_encode(["status" => "error"]);
-    exit;
-  }
+  echo json_encode(["status" => "error"]);
+  exit;
+}
 }
 
 
@@ -514,14 +514,14 @@ function GiveStar($userid,$productid,$point,$categoryid)
   $st2->execute([$userid,$productid]);
   $all = $st2->fetchAll();
 
- if(count($all) > 0){
-  $sql = "UPDATE productRatings SET ratingPoint = ? WHERE ratingCustomerID = ? AND ratingProductID = ?";
-  $st = $con->prepare($sql);
-  $st->execute([$point, $userid,$productid]);
-  if($st){
-   echo json_encode(["status" => "success"]);
-   exit;
-  }
+  if(count($all) > 0){
+    $sql = "UPDATE productRatings SET ratingPoint = ? WHERE ratingCustomerID = ? AND ratingProductID = ?";
+    $st = $con->prepare($sql);
+    $st->execute([$point, $userid,$productid]);
+    if($st){
+     echo json_encode(["status" => "success"]);
+     exit;
+   }
  }else{
   $sql = "INSERT INTO productRatings SET ratingPoint = ? , ratingCategoryID = ? , ratingCustomerID = ?, ratingProductID = ? ";
   $st = $con->prepare($sql);
@@ -531,15 +531,32 @@ function GiveStar($userid,$productid,$point,$categoryid)
    echo json_encode(["status" => "success"]);
    exit;
 
-  }else{
+ }else{
 
-    echo json_encode(["status" => "error"]);
-    exit;
-  }
-
-
- }
+  echo json_encode(["status" => "error"]);
+  exit;
 }
+
+
+}
+}
+
+function GetOrderDetails($code)
+{
+  global $con;
+
+  $sql = "SELECT * FROM orders
+  INNER JOIN products ON orderProductID = productID
+  INNER JOIN users ON orderCustomerID = userID
+  WHERE orderCode = ?";
+  $st = $con->prepare($sql);
+  $st->execute([$code]);
+  $all = $st->fetchAll(PDO::FETCH_ASSOC);
+  echo json_encode($all);
+  exit();
+}
+
+
 
 echo "jetOrder API";
 exit();

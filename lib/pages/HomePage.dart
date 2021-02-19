@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:emre_yildirim_jetorder/services/HomeService.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
 
 
@@ -87,7 +86,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
       ),
-      bottomNavigationBar: BottomNavigationBar(),
+      bottomNavigationBar: bottomNavigationBar(),
     );
   }
 
@@ -219,8 +218,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget BottomNavigationBar() {
-    List<String> Options = [
+  Widget bottomNavigationBar() {
+    List<String> options = [
       'Home',
       'Favorites',
       'Cart',
@@ -228,7 +227,7 @@ class _HomePageState extends State<HomePage> {
       'Profile'
     ];
 
-    List<IconData> BarIcons = [
+    List<IconData> barIcons = [
       Icons.home,
       Icons.favorite_border,
       Icons.shopping_cart_rounded,
@@ -244,7 +243,7 @@ class _HomePageState extends State<HomePage> {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20))),
       child: Row(
-        children: List.generate(Options.length, (index) {
+        children: List.generate(options.length, (index) {
           if (index == selectedIndex) {
             return Expanded(
               flex: 2,
@@ -268,11 +267,11 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          BarIcons[index],
+                          barIcons[index],
                           color: Colors.green,
                         ),
                         Text(
-                          Options[index],
+                          options[index],
                           style: GoogleFonts.varelaRound(
                               fontSize: 15, fontWeight: FontWeight.w500),
                         )
@@ -301,7 +300,7 @@ class _HomePageState extends State<HomePage> {
                 });
               },
               child: Icon(
-                BarIcons[index],
+                barIcons[index],
                 color: Colors.white,
               ),
             ),

@@ -1,10 +1,6 @@
-import 'dart:convert';
 import 'package:emre_yildirim_jetorder/services/MyOrdersService.dart';
 import 'package:flutter/material.dart';
 import 'package:emre_yildirim_jetorder/helpers/Style.dart';
-import 'package:emre_yildirim_jetorder/services/ShoppingCartService.dart';
-import 'package:decimal/decimal.dart';
-import 'package:sweetalert/sweetalert.dart';
 
 class MyOrdersPage extends StatefulWidget {
   @override
@@ -65,11 +61,8 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   Container listOrders(int id)
   {
 
-
-
-
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.symmetric(horizontal: 2),
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
@@ -82,9 +75,13 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                 Expanded(
                   child: Container(
                     margin: EdgeInsets.all(10),
-                    height: 50,
-                    width: 50,
-                    child: Icon(orders[id]["orderStatus"] == "0" ? Icons.delivery_dining: Icons.check_box,size: 50, color: orders[id]["orderStatus"] == "0" ? Colors.orange : Colors.green,),
+                    height: 55,
+                    width: 55,
+                    child: IconButton(onPressed: (){
+
+                      Navigator.pushNamed(context, '/OrderDetailsPage', arguments: {'orderCode': orders[id]["orderCode"]}).then((value) => setState(() {}));
+
+                    }, icon: Icon(orders[id]["orderStatus"] == "0" ? Icons.delivery_dining: Icons.check_box,size: 50, color: orders[id]["orderStatus"] == "0" ? Colors.orange : Colors.green,)),
                   ),
                 ),
                 Expanded(
@@ -92,7 +89,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("${orders[id]["orderCode"]}", style: headingStyle,),
-                      Text("${orders[id]["orderDate"]}", style: TextStyle(color: Colors.grey,fontSize: 15),),
+                      Text("${orders[id]["orderDate"]}", style: TextStyle(color: Colors.grey,fontSize: 14),),
 
                     ],
                   ),

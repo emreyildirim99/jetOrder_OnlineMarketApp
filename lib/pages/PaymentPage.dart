@@ -32,6 +32,10 @@ class _PaymentPageState extends State<PaymentPage> {
         ),
         actions: <Widget>[
           IconButton(
+            onPressed: (){
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/HomePage');
+            },
             icon: Icon(
               Icons.home,
               color: Colors.white,

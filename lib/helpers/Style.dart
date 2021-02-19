@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 TextStyle headingStyle = TextStyle(
-    fontSize: 20,
+    fontSize: 19,
     fontWeight: FontWeight.w700
 );
 TextStyle contentStyle = TextStyle(

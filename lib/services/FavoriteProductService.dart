@@ -32,24 +32,5 @@ class FavoriteProductService{
 
   }
 
-  Future IsFavorite () async{
-
-
-    //Make POST Request to API
-    final response = await http.post(Constants.API_URL, body:{
-      "operation": "isFavorite",
-      "userID": this.userID.toString(),
-      "productID" : this.productID.toString(),
-    });
-
-    var result;
-    if(response.body.isNotEmpty) {
-      result = json.decode(response.body);
-    }
-
-    //Return whether request is successful
-    return result["status"];
-
-  }
 
 }
