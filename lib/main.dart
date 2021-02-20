@@ -16,6 +16,7 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   //Check session
   dynamic userID = await FlutterSession().get('userID');
+  userID == null ? userID = '' : userID = userID;
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
