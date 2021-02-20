@@ -19,7 +19,7 @@ void main() async{
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: userID != 0 ? HomePage() : LoginPage(),
+    home: userID != '' ? HomePage() : LoginPage(),
     routes: {
       '/LoginPage': (context)=>LoginPage(),
       '/RegisterPage': (context)=>RegisterPage(),

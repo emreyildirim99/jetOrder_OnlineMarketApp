@@ -95,15 +95,16 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                       ],
                     ),
                     SizedBox(height: 20,),
+                    SizedBox(height: 20,),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Icon(Icons.home),
+                        SizedBox(width: 10,),
                         Column(
                           children: [
-                            Text("Delivery Address:", style: headingStyle,),
+                            Text("${orderData[0]['userAddress']} \n ${orderData[0]['userProvince'] }/${orderData[0]['userDistrict'] }", style: headingStyle,),
                           ],
                         ),
-                        Text("${orderData[0]['userAddress']} \n ${orderData[0]['userProvince'] }/${orderData[0]['userDistrict'] }", style: headingStyle,),
                       ],
                     ),
                     SizedBox(height: 20,),

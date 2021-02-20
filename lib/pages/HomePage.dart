@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
         leading: IconButton(
           icon: Icon(Icons.exit_to_app),
           onPressed: () {
-            FlutterSession().set("userID", 0);
+            FlutterSession().set("userID", '');
             Navigator.of(context).pushNamed("/LoginPage");
             },
           color: Colors.white,
