@@ -23,8 +23,10 @@ class LoginService{
     if(response.body.isNotEmpty) {
       result = json.decode(response.body);
 
+
+      var userID = result["userID"] != 0 ? result["userID"] : '';
       //Set Session to keep users logged in & auto login
-      await FlutterSession().set('userID', result["userID"]);
+      await FlutterSession().set('userID', userID);
     }
 
     //Return response
